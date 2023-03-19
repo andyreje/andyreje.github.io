@@ -4,6 +4,7 @@
     display: table
 }
 
+
 .clearfix:after {
     clear: both
 }
