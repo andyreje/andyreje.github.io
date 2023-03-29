@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>javascript基础-轮播图原理 | andyreje&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="javascript基础-轮播图 轮播图结构以及实现方法 普通轮播图结构：由数张图片，左右按钮以及导航按钮构成  图片移动方式 方法一 使用css3中transform语句搭配过度语句transition，实现图片缓慢移动的现象 方法二 使用JavaScript编写动画函数，通过offsetleft确定图片位置，再通过增加图片的style.left来实现移动。还可以通过JavaScript写出缓动">
+  <meta name="description" content="javascript基础-轮播图轮播图结构以及实现方法普通轮播图结构：由数张图片，左右按钮以及导航按钮构成">
 <meta property="og:type" content="article">
 <meta property="og:title" content="javascript基础-轮播图原理">
 <meta property="og:url" content="http://example.com/2022/03/29/sildeshow/index.html">
 <meta property="og:site_name" content="andyreje&#39;s blog">
-<meta property="og:description" content="javascript基础-轮播图 轮播图结构以及实现方法 普通轮播图结构：由数张图片，左右按钮以及导航按钮构成  图片移动方式 方法一 使用css3中transform语句搭配过度语句transition，实现图片缓慢移动的现象 方法二 使用JavaScript编写动画函数，通过offsetleft确定图片位置，再通过增加图片的style.left来实现移动。还可以通过JavaScript写出缓动">
+<meta property="og:description" content="javascript基础-轮播图轮播图结构以及实现方法普通轮播图结构：由数张图片，左右按钮以及导航按钮构成">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.postimg.cc/L6Gd6G8x/image.jpg">
 <meta property="article:published_time" content="2022-03-29T13:19:09.000Z">
-<meta property="article:modified_time" content="2023-03-29T15:13:50.049Z">
+<meta property="article:modified_time" content="2023-03-29T15:16:12.032Z">
 <meta property="article:author" content="Andyreje">
-<meta property="article:tag" content="学习">
 <meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.postimg.cc/L6Gd6G8x/image.jpg">
   
@@ -167,17 +167,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1>javascript基础-轮播图</h1>
-<h2 id="轮播图结构以及实现方法">轮播图结构以及实现方法</h2>
-<p>普通轮播图结构：由数张图片，左右按钮以及导航按钮构成</p>
+        <h1 id="javascript基础-轮播图"><a href="#javascript基础-轮播图" class="headerlink" title="javascript基础-轮播图"></a>javascript基础-轮播图</h1><h2 id="轮播图结构以及实现方法"><a href="#轮播图结构以及实现方法" class="headerlink" title="轮播图结构以及实现方法"></a>轮播图结构以及实现方法</h2><p>普通轮播图结构：由数张图片，左右按钮以及导航按钮构成</p>
 <img src="https://i.postimg.cc/L6Gd6G8x/image.jpg" style="zoom:50%;" />
-<h4 id="图片移动方式">图片移动方式</h4>
-<h6 id="方法一">方法一</h6>
-<p>使用css3中transform语句搭配过度语句transition，实现图片缓慢移动的现象</p>
-<h6 id="方法二">方法二</h6>
-<p>使用JavaScript编写动画函数，通过offsetleft确定图片位置，再通过增加图片的style.left来实现移动。还可以通过JavaScript写出缓动动画使图片移动更加美观。</p>
+
+<span id="more"></span>
+
+<h4 id="图片移动方式"><a href="#图片移动方式" class="headerlink" title="图片移动方式"></a>图片移动方式</h4><h6 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h6><p>使用css3中transform语句搭配过度语句transition，实现图片缓慢移动的现象</p>
+<h6 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h6><p>使用JavaScript编写动画函数，通过offsetleft确定图片位置，再通过增加图片的style.left来实现移动。还可以通过JavaScript写出缓动动画使图片移动更加美观。</p>
 <p>动画js代码如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">animate</span>(<span class="params">obj, target, callback</span>) &#123;</span><br><span class="line">    <span class="built_in">clearInterval</span>(obj.<span class="property">timer</span>);<span class="comment">/*函数开始前清除定时器，防止用户反复调用函数*/</span></span><br><span class="line">    obj.<span class="property">timer</span> = <span class="built_in">setInterval</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> step = (target - obj.<span class="property">offsetLeft</span>) / <span class="number">10</span>;<span class="comment">/*step为每一步运动的步长，随着时间推进，步长越来越小，从实现缓动的效果 */</span></span><br><span class="line">        step = step &gt; <span class="number">0</span> ? <span class="title class_">Math</span>.<span class="title function_">ceil</span>(step) : <span class="title class_">Math</span>.<span class="title function_">floor</span>(step)<span class="comment">/* 此为防止step出现小数的取整语句*/</span></span><br><span class="line">        <span class="keyword">if</span> (obj.<span class="property">offsetLeft</span> == target) &#123;</span><br><span class="line">            <span class="built_in">clearInterval</span>(obj.<span class="property">timer</span>);<span class="comment">/*当到达目标清除定时器*/</span></span><br><span class="line">            <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">                <span class="title function_">callback</span>();<span class="comment">/*回调函数，当动画结束时调用*/</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            obj.<span class="property">style</span>.<span class="property">left</span> = obj.<span class="property">offsetLeft</span> + step + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">30</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 
       
 
@@ -191,11 +192,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">学习</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">JavaScript</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">学习</a>
         		</li>
       		
 		</ul>
@@ -294,7 +295,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">javascript基础-轮播图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AE%E6%92%AD%E5%9B%BE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">轮播图结构以及实现方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E7%A7%BB%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">图片移动方式</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">1.1.0.1.0.1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">1.1.0.1.0.2.</span> <span class="toc-text">方法二</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#javascript%E5%9F%BA%E7%A1%80-%E8%BD%AE%E6%92%AD%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">javascript基础-轮播图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AE%E6%92%AD%E5%9B%BE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">轮播图结构以及实现方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E7%A7%BB%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">图片移动方式</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">1.1.0.1.0.1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">1.1.0.1.0.2.</span> <span class="toc-text">方法二</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -398,11 +399,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -410,7 +407,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">JavaScript</a>
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
             
             <div class="clearfix"></div>
